@@ -1,0 +1,36 @@
+from airflow import DAG
+from datetime import timedelta, datetime
+
+{% if tasks %}
+from lib.operators.{{ tasks.operator }} import {{ tasks.operator_class }}
+{% endif -%}
+
+
+default_args = {
+    "owner": '{{ owner }}',
+    "depends_on_past": {{ depends_on_past }},
+    "start_date": '{{ start_date }}',
+    "email": '{{ email }}',
+    "email_on_failure": {{ email_on_failure }},
+    "email_on_retry": {{ email_on_retry }},
+    "retries": {{ retries }},
+    "retry_delay": timedelta({{ retry_delay }}),
+}
+
+dag = DAG(
+    dag_id='{{ dag_name }}',
+    catchup={{ catchup }},
+    default_args=default_args,
+    max_active_runs={{ max_active_runs }},
+    schedule_interval='{{ schedule }}',
+)
+
+dag.doc_md = __doc__
+
+{% if tasks %}
+
+{# precisa de uma regra de validação aqui para selecao do Operator #}
+{% import "postgres_operator.template" as pg_operator %}
+{{ pg_operator.task(tasks.task_name, tasks.operator_class, tasks.sql) }}
+
+{% endif -%}

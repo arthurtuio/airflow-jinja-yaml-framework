@@ -1,0 +1,10 @@
+{% macro task(task_name, operator_class, sql) -%}
+    {{ task_name }} = {{ operator_class }}(
+    task_id="{{ task_name }}",
+    postgres_conn_id="substitua_esse_valor_por_sua_conn",
+    sql="{{ sql }}",
+    autocommit=True,
+    depends_on_past=False,
+    dag=dag,
+)
+{%- endmacro %}
