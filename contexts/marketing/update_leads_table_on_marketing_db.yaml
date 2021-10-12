@@ -1,0 +1,17 @@
+dag_name: "update_leads_table_on_marketing_db"
+owner: MARKETING
+email: marketing@dundermifflin.com
+start_date: "2021-01-05"
+schedule: "@daily"
+
+tasks:
+  task_name: update_leads_table_on_marketing_db_task
+  operator: "postgres_operator"
+  sql: "
+    UPDATE mkt_schema.leads_table l
+    SET l.id = c.lead_id
+    FROM mkt_schema.company c
+    WHERE l.updated_at >= current_date - '5 days'::INTERVAL
+      AND c.email = l.lead_email
+      AND l.lead_email IS NOT NULL;
+  "
