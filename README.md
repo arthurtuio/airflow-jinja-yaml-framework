@@ -10,8 +10,8 @@
 - A pessoa adiciona/atualiza o arquivo YAML com todas as informações necessárias para criar a DAG (
   para isso veja o `CONTEXTS_README` presente na pasta `contexts/`
   )
-- O arquivo Python é criado e enviado para a branch master, ou para o local de produção delas, por ex a pasta `dags/`
-  - No caso deste repo, foi decidido que será enviado para a pasta `dags/`
+- O script `scripts/convert_yaml_in_dag.py` precisa ser executado, passando qual o nome
+do YAML, e ele fará a conversão para uma DAG.
 
 ### Sobre as pastas:
 - `contexts/`: Pasta onde ficam armazenados os YAMLs por contexto da empresa.  
@@ -32,6 +32,8 @@ Dentro dessa pasta há um README explicando os padrões de criação dos YAMLs
   - https://towardsdatascience.com/data-engineers-shouldnt-write-airflow-dags-part-2-8dee642493fb
   - https://stackoverflow.com/questions/66323798/reading-a-yaml-configuration-file-and-creating-a-dag-generator-in-airflow-2-0
 
-### TBD
+### TBD - Próximos passos
+- Automatizar a execução do script `convert_yaml_in_dag.py`
+- Generalizar o script acima, para mais opções de contextos, criando um input recebendo isto
 - Implementar testes na estrutura dos YAMLs. Uma sugestão é usar a lib `cerberus`
 - Implementar CI para os testes. Uma sugestão é usar o proprio `github_actions`
